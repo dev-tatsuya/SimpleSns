@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "54777171220",
+    "firebase_url": "https://simple-sns-77e90.firebaseio.com",
+    "project_id": "simple-sns-77e90",
+    "storage_bucket": "simple-sns-77e90.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:54777171220:android:c12e82b7405f25e7e68601",
+        "android_client_info": {
+          "package_name": "yasux.com.example.simple_sns"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "54777171220-ud7cmp53q14afbm68rpcbcnim970bocf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzgczJX59JNSMRdOyk18gDWfN2DgIdX9k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "54777171220-ud7cmp53q14afbm68rpcbcnim970bocf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "54777171220-1f3r73hua3l2bteokv3ul0dafegjofbg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "yasux.com.example.simpleSns"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
