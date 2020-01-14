@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:simple_sns/app/main/main_page.dart';
 import 'package:simple_sns/app/sign_in/sign_in_page.dart';
 import 'package:simple_sns/services/auth.dart';
+import 'package:simple_sns/services/database.dart';
 
 class LandingPage extends StatelessWidget {
   @override
@@ -17,11 +19,10 @@ class LandingPage extends StatelessWidget {
             }
             return Provider<User>.value(
               value: user,
-              child: Container()
-//              Provider<Database>(
-//                builder: (_) => FirestoreDatabase(uid: user.uid),
-//                child: HomePage(),
-//              ),
+              child: Provider<Database>(
+                create: (_) => FirestoreDatabase(uid: user.uid),
+                child: MainPage(),
+              ),
             );
           } else {
             return Scaffold(
