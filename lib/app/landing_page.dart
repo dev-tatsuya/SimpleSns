@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:simple_sns/app/sign_in/sign_in_page.dart';
 import 'package:simple_sns/services/auth.dart';
 
 class LandingPage extends StatelessWidget {
@@ -12,7 +13,7 @@ class LandingPage extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.active) {
             User user = snapshot.data;
             if (user == null) {
-              return Container(); //SignInPage.create(context);
+              return SignInPage.create(context);
             }
             return Provider<User>.value(
               value: user,
