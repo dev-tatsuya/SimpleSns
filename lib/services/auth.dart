@@ -2,20 +2,36 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
 class User {
-  User(
-      {@required this.uid,
-      @required this.photoUrl,
-      @required this.displayName});
+  User({@required this.uid, @required this.displayName});
+
   final String uid;
-  final String photoUrl;
   final String displayName;
+
+  factory User.fromMap(Map<String, dynamic> data, String uid) {
+    if (data == null) {
+      return null;
+    }
+    final String displayName = data['displayName'];
+    return User(
+      uid: uid,
+      displayName: displayName,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {'displayName': displayName};
+  }
 }
 
 abstract class AuthBase {
   Stream<User> get onAuthStateChanged;
+
   Future<User> currentUser();
+
   Future<User> signInWithEmailAndPassword(String email, String password);
+
   Future<User> createUserWithEmailAndPassword(String email, String password);
+
   Future<void> signOut();
 }
 
@@ -29,7 +45,6 @@ class Auth implements AuthBase {
     return User(
       uid: user.uid,
       displayName: user.displayName,
-      photoUrl: user.photoUrl,
     );
   }
 
@@ -46,16 +61,15 @@ class Auth implements AuthBase {
 
   @override
   Future<User> signInWithEmailAndPassword(String email, String password) async {
-    final authResult = await _firebaseAuth.signInWithEmailAndPassword(
-        email: email, password: password);
+    final authResult =
+        await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
     return _userFromFirebase(authResult.user);
   }
 
   @override
-  Future<User> createUserWithEmailAndPassword(
-      String email, String password) async {
-    final authResult = await _firebaseAuth.createUserWithEmailAndPassword(
-        email: email, password: password);
+  Future<User> createUserWithEmailAndPassword(String email, String password) async {
+    final authResult =
+        await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
     return _userFromFirebase(authResult.user);
   }
 

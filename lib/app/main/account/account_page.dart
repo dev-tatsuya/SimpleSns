@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:simple_sns/app/main/account/edit_account_page.dart';
 import 'package:simple_sns/common_widgets/avatar.dart';
 import 'package:simple_sns/common_widgets/platform_alert_dialog.dart';
 import 'package:simple_sns/services/auth.dart';
+import 'package:simple_sns/services/database.dart';
 
 class AccountPage extends StatelessWidget {
-
   Future<void> _signOut(BuildContext context) async {
     try {
       final auth = Provider.of<AuthBase>(context, listen: false);
@@ -29,27 +30,41 @@ class AccountPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<User>(context);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Account'),
-        actions: <Widget>[
-          FlatButton(
-            child: Text(
-              'Logout',
-              style: TextStyle(
-                fontSize: 18.0,
-                color: Colors.white,
+    final database = Provider.of<Database>(context);
+    return StreamBuilder<User>(
+      stream: database.userStream(),
+      builder: (context, snapshot) {
+        final user = snapshot.data;
+        return Scaffold(
+          appBar: AppBar(
+            title: Text('Account'),
+            leading: IconButton(
+              icon: Icon(Icons.edit),
+              onPressed: () => EditAccountPage.show(
+                context,
+                database: database,
+                user: user,
               ),
             ),
-            onPressed: () => _confirmSignOut(context),
+            actions: <Widget>[
+              FlatButton(
+                child: Text(
+                  'Logout',
+                  style: TextStyle(
+                    fontSize: 18.0,
+                    color: Colors.white,
+                  ),
+                ),
+                onPressed: () => _confirmSignOut(context),
+              ),
+            ],
+            bottom: PreferredSize(
+              preferredSize: Size.fromHeight(130),
+              child: _buildUserInfo(user),
+            ),
           ),
-        ],
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(130),
-          child: _buildUserInfo(user),
-        ),
-      ),
+        );
+      }
     );
   }
 
@@ -57,15 +72,14 @@ class AccountPage extends StatelessWidget {
     return Column(
       children: <Widget>[
         Avatar(
-          photoUrl: user.photoUrl,
+          photoUrl: null,
           radius: 50,
         ),
         SizedBox(height: 8),
-        if (user.displayName != null)
-          Text(
-            user.displayName,
-            style: TextStyle(color: Colors.white),
-          ),
+        Text(
+          user?.displayName ?? "左上の編集アイコンからDisplayNameを設定してください",
+          style: TextStyle(fontSize: 18, color: Colors.white),
+        ),
         SizedBox(height: 8),
       ],
     );
