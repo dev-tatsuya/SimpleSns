@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:simple_sns/app/sign_in/email_sign_in_page.dart';
 import 'package:simple_sns/app/sign_in/sign_in_bloc.dart';
 import 'package:simple_sns/app/sign_in/sign_in_button.dart';
 import 'package:simple_sns/common_widgets/platform_exception_alert_dialog.dart';
@@ -32,7 +33,7 @@ class SignInPage extends StatelessWidget {
     Navigator.of(context).push(
       MaterialPageRoute(
         fullscreenDialog: true,
-        builder: (context) => Container() //EmailSignInPage(),
+        builder: (context) => EmailSignInPage(),
       ),
     );
   }
