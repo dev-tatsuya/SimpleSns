@@ -8,16 +8,20 @@ import 'package:simple_sns/common_widgets/platform_exception_alert_dialog.dart';
 import 'package:simple_sns/services/auth.dart';
 
 class EmailSignInFormBlocBased extends StatefulWidget {
-  EmailSignInFormBlocBased({@required this.bloc});
+  EmailSignInFormBlocBased({
+    @required this.bloc,
+    @required this.formType,
+  });
 
   final EmailSignInBloc bloc;
+  final EmailSignInFormType formType;
 
-  static Widget create(BuildContext context) {
+  static Widget create(BuildContext context, EmailSignInFormType formType) {
     final AuthBase auth = Provider.of<AuthBase>(context);
     return Provider<EmailSignInBloc>(
-      create: (context) => EmailSignInBloc(auth: auth),
+      create: (context) => EmailSignInBloc(auth: auth, formType: formType),
       child: Consumer<EmailSignInBloc>(
-        builder: (context, bloc, _) => EmailSignInFormBlocBased(bloc: bloc),
+        builder: (context, bloc, _) => EmailSignInFormBlocBased(bloc: bloc, formType: formType),
       ),
       dispose: (context, bloc) => bloc.dispose(),
     );
@@ -62,7 +66,6 @@ class _EmailSignInFormBlocBasedState extends State<EmailSignInFormBlocBased> {
 
   void _toggleFormType() {
     widget.bloc.toggleFromType();
-    _emailController.clear();
     _passwordController.clear();
   }
 
@@ -71,7 +74,7 @@ class _EmailSignInFormBlocBasedState extends State<EmailSignInFormBlocBased> {
       _buildEmailTextField(model),
       SizedBox(height: 8.0),
       _buildPasswordTextField(model),
-      SizedBox(height: 8.0),
+      SizedBox(height: 16.0),
       FormSubmitButton(
         text: model.primaryButtonText,
         onPressed: model.canSubmit ? _submit : null,
@@ -122,7 +125,7 @@ class _EmailSignInFormBlocBasedState extends State<EmailSignInFormBlocBased> {
   Widget build(BuildContext context) {
     return StreamBuilder(
       stream: widget.bloc.modelStream,
-      initialData: EmailSignInModel(),
+      initialData: EmailSignInModel(formType: widget.formType),
       builder: (context, snapshot) {
         final EmailSignInModel model = snapshot.data;
         return Padding(
