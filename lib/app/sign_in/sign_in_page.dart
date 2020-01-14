@@ -42,7 +42,7 @@ class SignInPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Time Tracker"),
+        title: Text("Simple SNS"),
         elevation: 10.0,
       ),
       body: StreamBuilder(
@@ -68,11 +68,27 @@ class SignInPage extends StatelessWidget {
             child: _buildHeader(isLoading),
           ),
           SizedBox(height: 48),
-          SignInButton(
-            text: "Sign in with email",
-            textColor: Colors.white,
-            color: Colors.teal[700],
-            onPressed: () => isLoading ? null : _signInWithEmail(context),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Expanded(
+                child: SignInButton(
+                  text: "Sign in",
+                  textColor: Colors.white,
+                  color: Colors.teal[700],
+                  onPressed: () => isLoading ? null : _signInWithEmail(context),
+                ),
+              ),
+              SizedBox(width: 8),
+              Expanded(
+                child: SignInButton(
+                  text: "Sign up",
+                  textColor: Colors.teal[700],
+                  color: Colors.grey[100],
+                  onPressed: () => isLoading ? null : _signInWithEmail(context),
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -86,7 +102,7 @@ class SignInPage extends StatelessWidget {
       );
     }
     return Text(
-      "Sign In",
+      "Welcome",
       textAlign: TextAlign.center,
       style: TextStyle(
         fontSize: 32,
