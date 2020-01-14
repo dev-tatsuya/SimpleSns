@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:simple_sns/app/main/account/account_page.dart';
 import 'package:simple_sns/app/main/cupertino_main_scaffold.dart';
 import 'package:simple_sns/app/main/tab_item.dart';
 
@@ -20,7 +21,7 @@ class _MainPageState extends State<MainPage> {
     return {
       TabItem.jobs: (_) => Container(),
       TabItem.entries: (context) => Container(),
-      TabItem.account: (_) => Container() //AccountPage(),
+      TabItem.account: (_) => AccountPage(),
     };
   }
 
