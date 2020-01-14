@@ -23,6 +23,7 @@ class CupertinoMainScaffold extends StatelessWidget {
         items: [
           _buildItem(TabItem.jobs),
           _buildItem(TabItem.entries),
+          _buildItem(TabItem.add),
           _buildItem(TabItem.account),
         ],
         onTap: (index) => onSelectTab(TabItem.values[index]),

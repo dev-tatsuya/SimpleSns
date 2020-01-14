@@ -21,6 +21,7 @@ class _MainPageState extends State<MainPage> {
     return {
       TabItem.jobs: (_) => Container(),
       TabItem.entries: (context) => Container(),
+      TabItem.add: (_) => Container(),
       TabItem.account: (_) => AccountPage(),
     };
   }
