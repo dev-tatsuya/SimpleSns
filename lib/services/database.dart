@@ -49,9 +49,8 @@ class FirestoreDatabase implements Database {
       );
 
   @override
-  Future<void> deletePost(Post post) {
-    // TODO: implement deletePost
-    return null;
+  Future<void> deletePost(Post post) async {
+    await _service.deleteData(path: APIPath.post(uid, post.id));
   }
 
   @override
@@ -61,10 +60,10 @@ class FirestoreDatabase implements Database {
   }
 
   @override
-  Stream<List<Post>> postsStream() {
-    // TODO: implement postsStream
-    return null;
-  }
+  Stream<List<Post>> postsStream() => _service.collectionStream(
+        path: APIPath.posts(uid),
+        builder: (data, documentId) => Post.fromMap(data, documentId),
+      );
 
   @override
   Future<void> setPost(Post post) async => await _service.setData(
