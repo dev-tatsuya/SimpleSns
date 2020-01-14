@@ -1,29 +1,29 @@
 
 import 'package:simple_sns/app/sign_in/validators.dart';
 
-enum EmailSignInFromType { signIn, register }
+enum EmailSignInFormType { signIn, register }
 
 class EmailSignInModel with EmailAndPasswordValidators {
   EmailSignInModel({
     this.email = "",
     this.password = "",
-    this.formType = EmailSignInFromType.signIn,
+    this.formType,
     this.isLoading = false,
     this.submitted = false,
   });
 
   final String email;
   final String password;
-  final EmailSignInFromType formType;
+  final EmailSignInFormType formType;
   final bool isLoading;
   final bool submitted;
 
   String get primaryButtonText {
-    return formType == EmailSignInFromType.signIn ? 'Sign in' : 'Create an acount';
+    return formType == EmailSignInFormType.signIn ? 'Sign in' : 'Create an acount';
   }
 
   String get secondaryButtonText {
-    return formType == EmailSignInFromType.signIn
+    return formType == EmailSignInFormType.signIn
         ? 'Need an account? Register'
         : 'Have an account? Sign in';
   }
@@ -45,7 +45,7 @@ class EmailSignInModel with EmailAndPasswordValidators {
   EmailSignInModel copyWith({
     String email,
     String password,
-    EmailSignInFromType formType,
+    EmailSignInFormType formType,
     bool isLoading,
     bool submitted,
   }) {

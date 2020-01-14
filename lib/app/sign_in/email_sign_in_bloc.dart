@@ -5,9 +5,10 @@ import 'package:simple_sns/app/sign_in/email_sign_in_model.dart';
 import 'package:simple_sns/services/auth.dart';
 
 class EmailSignInBloc {
-  EmailSignInBloc({@required this.auth});
+  EmailSignInBloc({@required this.auth, @required this.formType});
 
   final AuthBase auth;
+  EmailSignInFormType formType;
 
   final StreamController<EmailSignInModel> _modelController = StreamController<EmailSignInModel>();
   EmailSignInModel _model = EmailSignInModel();
@@ -21,7 +22,7 @@ class EmailSignInBloc {
   Future<void> submit() async {
     updateWith(submitted: true, isLoading: true);
     try {
-      if (_model.formType == EmailSignInFromType.signIn) {
+      if (_model.formType == EmailSignInFormType.signIn) {
         await auth.signInWithEmailAndPassword(_model.email, _model.password);
       } else {
         await auth.createUserWithEmailAndPassword(_model.email, _model.password);
@@ -37,29 +38,30 @@ class EmailSignInBloc {
   void updatePassword(String password) => updateWith(password: password);
 
   void toggleFromType() {
-    final formType = _model.formType == EmailSignInFromType.signIn
-        ? EmailSignInFromType.register
-        : EmailSignInFromType.signIn;
+    final retType = formType == EmailSignInFormType.signIn
+        ? EmailSignInFormType.register
+        : EmailSignInFormType.signIn;
     updateWith(
       email: "",
       password: "",
-      formType: formType,
+      emailSignInFormType: retType,
       isLoading: false,
       submitted: false,
     );
+    formType = retType;
   }
 
   void updateWith({
     String email,
     String password,
-    EmailSignInFromType formType,
+    EmailSignInFormType emailSignInFormType,
     bool isLoading,
     bool submitted,
   }) {
     _model = _model.copyWith(
       email: email,
       password: password,
-      formType: formType,
+      formType: emailSignInFormType ?? formType,
       isLoading: isLoading,
       submitted: submitted,
     );

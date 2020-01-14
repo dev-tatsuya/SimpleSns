@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:simple_sns/app/sign_in/email_sign_in_model.dart';
 import 'package:simple_sns/app/sign_in/email_sign_in_page.dart';
 import 'package:simple_sns/app/sign_in/sign_in_bloc.dart';
 import 'package:simple_sns/app/sign_in/sign_in_button.dart';
@@ -29,11 +30,11 @@ class SignInPage extends StatelessWidget {
     ).show(context);
   }
 
-  void _signInWithEmail(BuildContext context) {
+  void _signInWithEmail(BuildContext context, EmailSignInFormType formType) {
     Navigator.of(context).push(
       MaterialPageRoute(
         fullscreenDialog: true,
-        builder: (context) => EmailSignInPage(),
+        builder: (context) => EmailSignInPage(formType: formType),
       ),
     );
   }
@@ -76,7 +77,8 @@ class SignInPage extends StatelessWidget {
                   text: "Sign in",
                   textColor: Colors.white,
                   color: Colors.teal[700],
-                  onPressed: () => isLoading ? null : _signInWithEmail(context),
+                  onPressed: () =>
+                      isLoading ? null : _signInWithEmail(context, EmailSignInFormType.signIn),
                 ),
               ),
               SizedBox(width: 8),
@@ -85,7 +87,8 @@ class SignInPage extends StatelessWidget {
                   text: "Sign up",
                   textColor: Colors.teal[700],
                   color: Colors.grey[100],
-                  onPressed: () => isLoading ? null : _signInWithEmail(context),
+                  onPressed: () =>
+                      isLoading ? null : _signInWithEmail(context, EmailSignInFormType.register),
                 ),
               ),
             ],
