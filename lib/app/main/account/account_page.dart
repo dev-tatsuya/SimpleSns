@@ -42,7 +42,7 @@ class AccountPage extends StatelessWidget {
         final user = snapshot.data;
         return Scaffold(
           appBar: AppBar(
-            title: Text('Account'),
+            title: Text(user?.displayName ?? "Account"),
             leading: IconButton(
               icon: Icon(Icons.edit),
               onPressed: () => EditAccountPage.show(
@@ -82,10 +82,11 @@ class AccountPage extends StatelessWidget {
           radius: 50,
         ),
         SizedBox(height: 8),
-        Text(
-          user?.displayName ?? "左上の編集アイコンからDisplayNameを設定してください",
-          style: TextStyle(fontSize: 18, color: Colors.white),
-        ),
+        if (user?.displayName == null)
+          Text(
+            "左上の編集アイコンからDisplayNameを設定してください",
+            style: TextStyle(fontSize: 14, color: Colors.white),
+          ),
         SizedBox(height: 8),
       ],
     );
