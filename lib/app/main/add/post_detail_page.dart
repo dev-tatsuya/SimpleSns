@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:simple_sns/app/main/add/edit_post_page.dart';
 import 'package:simple_sns/app/main/models/post.dart';
 import 'package:simple_sns/services/database.dart';
 
-class PostDetailPage extends StatefulWidget {
+class PostDetailPage extends StatelessWidget {
   const PostDetailPage({
     Key key,
     @required this.database,
@@ -15,32 +17,15 @@ class PostDetailPage extends StatefulWidget {
 
   static Future<void> show(
     BuildContext context, {
-    Database database,
     Post post,
   }) async {
-    await Navigator.of(context, rootNavigator: true).push(
-      MaterialPageRoute(
+    final Database database = Provider.of<Database>(context, listen: false);
+    await Navigator.of(context).push(
+      CupertinoPageRoute(
         builder: (context) => PostDetailPage(database: database, post: post),
         fullscreenDialog: false,
       ),
     );
-  }
-
-  @override
-  _PostDetailPageState createState() => _PostDetailPageState();
-}
-
-class _PostDetailPageState extends State<PostDetailPage> {
-  final _formKey = GlobalKey<FormState>();
-
-  String _name;
-
-  @override
-  void initState() {
-    super.initState();
-    if (widget.post != null) {
-      _name = widget.post.title;
-    }
   }
 
   @override
@@ -50,33 +35,40 @@ class _PostDetailPageState extends State<PostDetailPage> {
         elevation: 5,
         title: Text("post"),
       ),
-      body: _buildContents(),
+      body: _buildContents(context),
       backgroundColor: Colors.grey[200],
     );
   }
 
-  Widget _buildContents() {
+  Widget _buildContents(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Card(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
-            child: _buildForm(),
+            child: _buildForm(context),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildForm() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: _buildFormChildren(),
+  Widget _buildForm(BuildContext context) {
+    return StreamBuilder<Post>(
+      stream: database.postStream(postId: post.id),
+      builder: (context, snapshot) {
+        final post = snapshot.data;
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: _buildFormChildren(context, post),
+        );
+      }
     );
   }
 
-  List<Widget> _buildFormChildren() {
+  List<Widget> _buildFormChildren(BuildContext context, Post post) {
+    final _optionItems = ["編集", "削除"];
     return [
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -84,30 +76,49 @@ class _PostDetailPageState extends State<PostDetailPage> {
           FlatButton(
             onPressed: () {},
             child: Text(
-              "Tatsuya",
+              "＠鬼滅の炭治郎",
               style: TextStyle(fontSize: 20),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          IconButton(
-            icon: Icon(Icons.more_vert),
-            onPressed: () {},
+          PopupMenuButton(
+            itemBuilder: (context) => _optionItems
+                .map(
+                  (item) => PopupMenuItem(
+                    child: Text(item),
+                    value: item,
+                  ),
+                )
+                .toList(),
+            onSelected: (item) {
+              if (item == "編集") {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => EditPostPage(database: database, post: post),
+                    fullscreenDialog: true,
+                  )
+                );
+              } else {
+                // TODO アラートダイアログを表示して削除する
+                print("アラートダイアログを表示して削除する");
+              }
+            },
           ),
         ],
       ),
       Divider(),
       Text(
-        widget.post.title,
+        post?.title ?? "",
         style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
       ),
       SizedBox(height: 20),
       Text(
-        widget.post.body,
+        post?.body ?? "",
         style: TextStyle(fontSize: 20),
       ),
       SizedBox(height: 20),
-      Text("created at: ${widget.post.id}"), // TODO フォーマット修正
+      Text("created at: ${post?.id}"),
       Divider(),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,

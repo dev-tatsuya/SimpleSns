@@ -54,10 +54,10 @@ class FirestoreDatabase implements Database {
   }
 
   @override
-  Stream<Post> postStream({String postId}) {
-    // TODO: implement postStream
-    return null;
-  }
+  Stream<Post> postStream({String postId}) => _service.documentStream(
+        path: APIPath.post(uid, postId),
+        builder: (data, documentId) => Post.fromMap(data, documentId),
+      );
 
   @override
   Stream<List<Post>> postsStream() => _service.collectionStream(

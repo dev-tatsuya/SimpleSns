@@ -107,7 +107,7 @@ class AccountPage extends StatelessWidget {
             onDismissed: (direction) => _delete(context, post),
             child: PostListTile(
               post: post,
-              onTap: () => PostDetailPage.show(context, database: database, post: post),
+              onTap: () => PostDetailPage.show(context, post: post),
             ),
           ),
         );
