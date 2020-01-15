@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_sns/app/main/models/post.dart';
 import 'package:simple_sns/common_widgets/platform_alert_dialog.dart';
-import 'package:simple_sns/services/auth.dart';
 import 'package:simple_sns/services/database.dart';
 
 class AddPage extends StatefulWidget {
@@ -13,6 +12,8 @@ class AddPage extends StatefulWidget {
 
 class _AddPageState extends State<AddPage> {
   final _formKey = GlobalKey<FormState>();
+  final _titleController = TextEditingController();
+  final _bodyController = TextEditingController();
 
   String _title;
   String _body;
@@ -31,6 +32,8 @@ class _AddPageState extends State<AddPage> {
       final id = documentIdFromCurrentDate();
       final post = Post(id: id, title: _title, body: _body);
       await database.setPost(post);
+      _titleController.clear();
+      _bodyController.clear();
     } else {
       PlatformAlertDialog(
         title: 'Title or Body is null',
@@ -86,16 +89,16 @@ class _AddPageState extends State<AddPage> {
   List<Widget> _buildFormChildren() {
     return [
       TextFormField(
+        controller: _titleController,
         decoration: InputDecoration(labelText: 'Title'),
-        initialValue: _title,
         validator: (value) => value.isNotEmpty ? null : 'Title can\'t be empty',
         onSaved: (value) => _title = value,
       ),
       SizedBox(height: 8,),
       TextFormField(
+        controller: _bodyController,
         maxLines: 6,
         decoration: InputDecoration(labelText: 'Body'),
-        initialValue: _body,
         validator: (value) => value.isNotEmpty ? null : 'Body can\'t be empty',
         onSaved: (value) => _body = value,
       ),
