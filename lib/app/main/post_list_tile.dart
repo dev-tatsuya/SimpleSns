@@ -9,8 +9,16 @@ class PostListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(post.title),
-      subtitle: Text(post.body),
+      title: Text(
+        post.title,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
+      subtitle: Text(
+        post.body,
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
+      ),
       trailing: Icon(Icons.chevron_right),
       onTap: onTap,
     );

@@ -81,7 +81,8 @@ class _PostDetailPageState extends State<PostDetailPage> {
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Flexible(
+          FlatButton(
+            onPressed: () {},
             child: Text(
               "Tatsuya",
               style: TextStyle(fontSize: 20),
@@ -96,20 +97,14 @@ class _PostDetailPageState extends State<PostDetailPage> {
         ],
       ),
       Divider(),
-      Row(
-        children: <Widget>[
-          Flexible(
-            child: Text(
-              widget.post.title,
-              style: TextStyle(fontSize: 28),
-            ),
-          ),
-        ],
+      Text(
+        widget.post.title,
+        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
       ),
       SizedBox(height: 20),
       Text(
         widget.post.body,
-        style: TextStyle(fontSize: 22),
+        style: TextStyle(fontSize: 20),
       ),
       SizedBox(height: 20),
       Text("created at: ${widget.post.id}"), // TODO フォーマット修正
