@@ -10,18 +10,19 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  TabItem _currentTab = TabItem.jobs;
+  TabItem _currentTab = TabItem.home;
 
   final Map<TabItem, GlobalKey<NavigatorState>> navigatorKeys = {
-    TabItem.jobs: GlobalKey<NavigatorState>(),
-    TabItem.entries: GlobalKey<NavigatorState>(),
+    TabItem.home: GlobalKey<NavigatorState>(),
+    TabItem.search: GlobalKey<NavigatorState>(),
+    TabItem.add: GlobalKey<NavigatorState>(),
     TabItem.account: GlobalKey<NavigatorState>(),
   };
 
   Map<TabItem, WidgetBuilder> get widgetBuilders {
     return {
-      TabItem.jobs: (_) => Container(),
-      TabItem.entries: (context) => Container(),
+      TabItem.home: (_) => Container(),
+      TabItem.search: (context) => Container(),
       TabItem.add: (_) => AddPage(),
       TabItem.account: (_) => AccountPage(),
     };
