@@ -54,10 +54,14 @@ class _EditAccountPageState extends State<EditAccountPage> {
 
   Future<void> _submit() async {
     if (_validateAndSaveForm()) {
-      final id = widget.user.uid;
-      final user = User(uid: id, displayName: _name);
-      await widget.database.setUser(user);
-      Navigator.of(context).pop();
+      try {
+        final id = widget.user?.uid;
+        final user = User(uid: id, displayName: _name);
+        await widget.database.setUser(user);
+        Navigator.of(context).pop();
+      } catch (e) {
+        print(e.toString());
+      }
     } else {
       PlatformAlertDialog(
         title: 'Display name is null',
