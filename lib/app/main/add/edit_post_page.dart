@@ -113,7 +113,7 @@ class _EditPostPageState extends State<EditPostPage> {
       TextFormField(
         keyboardType: TextInputType.multiline,
         initialValue: _body,
-        maxLines: _body.length ~/ 10, // 動的に変えたい
+        maxLines: _body.length ~/ 10 + 1, // 動的に変えたい
         decoration: InputDecoration(labelText: 'Body'),
         validator: (value) => value.isNotEmpty ? null : 'Body can\'t be empty',
         onSaved: (value) => _body = value,
