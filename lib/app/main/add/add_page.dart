@@ -89,6 +89,7 @@ class _AddPageState extends State<AddPage> {
   List<Widget> _buildFormChildren() {
     return [
       TextFormField(
+        keyboardType: TextInputType.text,
         controller: _titleController,
         decoration: InputDecoration(labelText: 'Title'),
         validator: (value) => value.isNotEmpty ? null : 'Title can\'t be empty',
@@ -96,6 +97,7 @@ class _AddPageState extends State<AddPage> {
       ),
       SizedBox(height: 8,),
       TextFormField(
+        keyboardType: TextInputType.multiline,
         controller: _bodyController,
         maxLines: 6,
         decoration: InputDecoration(labelText: 'Body'),
