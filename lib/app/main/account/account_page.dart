@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_sns/app/main/account/edit_account_page.dart';
+import 'package:simple_sns/app/main/add/post_detail_page.dart';
 import 'package:simple_sns/app/main/models/post.dart';
 import 'package:simple_sns/app/main/post_list_tile.dart';
 import 'package:simple_sns/common_widgets/avatar.dart';
@@ -106,7 +107,7 @@ class AccountPage extends StatelessWidget {
             onDismissed: (direction) => _delete(context, post),
             child: PostListTile(
               post: post,
-              onTap: () => () {}, //JobEntriesPage.show(context, job),
+              onTap: () => PostDetailPage.show(context, database: database, post: post),
             ),
           ),
         );
