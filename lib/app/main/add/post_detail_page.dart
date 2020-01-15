@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_sns/app/main/add/edit_post_page.dart';
 import 'package:simple_sns/app/main/models/post.dart';
+import 'package:simple_sns/common_widgets/platform_alert_dialog.dart';
+import 'package:simple_sns/common_widgets/platform_exception_alert_dialog.dart';
 import 'package:simple_sns/services/database.dart';
+import 'package:flutter/services.dart';
 
 class PostDetailPage extends StatelessWidget {
   const PostDetailPage({
@@ -91,7 +94,7 @@ class PostDetailPage extends StatelessWidget {
                   ),
                 )
                 .toList(),
-            onSelected: (item) {
+            onSelected: (item) async {
               if (item == "編集") {
                 Navigator.of(context).push(
                   MaterialPageRoute(
@@ -100,8 +103,7 @@ class PostDetailPage extends StatelessWidget {
                   )
                 );
               } else {
-                // TODO アラートダイアログを表示して削除する
-                print("アラートダイアログを表示して削除する");
+                await _confirmDelete(context, post);
               }
             },
           ),
@@ -143,5 +145,30 @@ class PostDetailPage extends StatelessWidget {
       ),
       Divider(),
     ];
+  }
+
+  Future _confirmDelete(BuildContext context, Post post) async {
+    final didRequestDeletePost = await PlatformAlertDialog(
+      title: 'Delete this post',
+      content: 'Are you sure that you want to delete this post?',
+      cancelActionText: 'Cancel',
+      defaultActionText: 'Delete',
+    ).show(context);
+    if (didRequestDeletePost == true) {
+      _delete(context, post);
+      Navigator.of(context).pop();
+    }
+  }
+
+  Future<void> _delete(BuildContext context, Post post) async {
+    try {
+      final database = Provider.of<Database>(context, listen: false);
+      await database.deletePost(post);
+    } on PlatformException catch (e) {
+      PlatformExceptionAlertDialog(
+        title: 'Operation failed',
+        exception: e,
+      ).show(context);
+    }
   }
 }

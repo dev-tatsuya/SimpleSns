@@ -104,7 +104,7 @@ class AccountPage extends StatelessWidget {
             key: Key('post-${post.id}'),
             background: Container(color: Colors.red),
             direction: DismissDirection.endToStart,
-            onDismissed: (direction) => _delete(context, post),
+            confirmDismiss: (_) => _confirmDelete(context, post),
             child: PostListTile(
               post: post,
               onTap: () => PostDetailPage.show(context, post: post),
@@ -113,6 +113,20 @@ class AccountPage extends StatelessWidget {
         );
       }
     );
+  }
+
+  Future<bool> _confirmDelete(BuildContext context, Post post) async {
+    final didRequestDeletePost = await PlatformAlertDialog(
+      title: 'Delete this post',
+      content: 'Are you sure that you want to delete this post?',
+      cancelActionText: 'Cancel',
+      defaultActionText: 'Delete',
+    ).show(context);
+    if (didRequestDeletePost == true) {
+      _delete(context, post);
+      return true;
+    }
+    return false;
   }
 
   Future<void> _delete(BuildContext context, Post post) async {
