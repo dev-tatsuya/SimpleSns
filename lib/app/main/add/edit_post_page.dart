@@ -1,3 +1,4 @@
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_sns/app/main/models/post.dart';
@@ -47,6 +48,15 @@ class _EditPostPageState extends State<EditPostPage> {
       final id = widget.post.id ?? documentIdFromCurrentDate();
       final post = Post(id: id, title: _title, body: _body);
       await database.setPost(post);
+      try {
+        final dynamic resp = await CloudFunctions.instance.getHttpsCallable(
+            functionName: 'onUsersPostUpdate').call();
+        print(resp);
+      } on CloudFunctionsException catch (e) {
+        print("caught firebase functions exception: $e");
+      } catch (e) {
+        print("caught generic exception: $e");
+      }
       Navigator.of(context).pop();
     } else {
       PlatformAlertDialog(
