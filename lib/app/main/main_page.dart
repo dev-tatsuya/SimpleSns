@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:simple_sns/app/main/account/account_page.dart';
 import 'package:simple_sns/app/main/add/add_page.dart';
 import 'package:simple_sns/app/main/cupertino_main_scaffold.dart';
+import 'package:simple_sns/app/main/home/home_page.dart';
 import 'package:simple_sns/app/main/tab_item.dart';
 
 class MainPage extends StatefulWidget {
@@ -21,7 +22,7 @@ class _MainPageState extends State<MainPage> {
 
   Map<TabItem, WidgetBuilder> get widgetBuilders {
     return {
-      TabItem.home: (_) => Container(),
+      TabItem.home: (_) => HomePage(),
       TabItem.search: (context) => Container(),
       TabItem.add: (_) => AddPage(),
       TabItem.account: (_) => AccountPage(),

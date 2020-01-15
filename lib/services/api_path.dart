@@ -12,4 +12,6 @@ class APIPath {
   static String post(String uid, String postId) => 'users/$uid/posts/$postId';
 
   static String posts(String uid) => 'users/$uid/posts';
+
+  static String allPosts() => 'posts';
 }

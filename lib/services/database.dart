@@ -20,6 +20,8 @@ abstract class Database {
   Stream<Post> postStream({@required String postId});
 
   Stream<List<Post>> postsStream();
+
+  Stream<List<Post>> allPostsStream();
 }
 
 String documentIdFromCurrentDate() => DateTime.now().toIso8601String();
@@ -69,5 +71,11 @@ class FirestoreDatabase implements Database {
   Future<void> setPost(Post post) async => await _service.setData(
         path: APIPath.post(uid, post.id),
         data: post.toMap(),
+      );
+
+  @override
+  Stream<List<Post>> allPostsStream() => _service.collectionStream(
+        path: APIPath.allPosts(),
+        builder: (data, documentId) => Post.fromMap(data, documentId),
       );
 }
