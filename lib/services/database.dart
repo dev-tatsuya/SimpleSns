@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:meta/meta.dart';
+import 'package:simple_sns/app/main/models/post.dart';
 import 'package:simple_sns/services/api_path.dart';
 import 'package:simple_sns/services/auth.dart';
 import 'package:simple_sns/services/firestore_service.dart';
@@ -11,6 +12,14 @@ abstract class Database {
   Future<void> deleteUser(User user);
 
   Stream<User> userStream();
+
+  Future<void> setPost(Post post);
+
+  Future<void> deletePost(Post post);
+
+  Stream<Post> postStream({@required String postId});
+
+  Stream<List<Post>> postsStream();
 }
 
 String documentIdFromCurrentDate() => DateTime.now().toIso8601String();
@@ -37,5 +46,28 @@ class FirestoreDatabase implements Database {
   Stream<User> userStream() => _service.documentStream(
         path: APIPath.user(uid),
         builder: (data, _) => User.fromMap(data, uid),
+      );
+
+  @override
+  Future<void> deletePost(Post post) async {
+    await _service.deleteData(path: APIPath.post(uid, post.id));
+  }
+
+  @override
+  Stream<Post> postStream({String postId}) => _service.documentStream(
+        path: APIPath.post(uid, postId),
+        builder: (data, documentId) => Post.fromMap(data, documentId),
+      );
+
+  @override
+  Stream<List<Post>> postsStream() => _service.collectionStream(
+        path: APIPath.posts(uid),
+        builder: (data, documentId) => Post.fromMap(data, documentId),
+      );
+
+  @override
+  Future<void> setPost(Post post) async => await _service.setData(
+        path: APIPath.post(uid, post.id),
+        data: post.toMap(),
       );
 }
